@@ -24,7 +24,8 @@ export function DisciplinasProfessor(){
 
     },[]);
     return(
-        <div className={estilos.containerCard}>
+        <div className={estilos.wrapper}>
+            <div className={estilos.containerCard}>
             <h2 className={estilos.tituloCard}>Minhas Disciplinas</h2>
             <div className={estilos.listaCard}>
                 {disciplinas.map(disciplina=>(
@@ -39,6 +40,8 @@ export function DisciplinasProfessor(){
                 ))}
             </div>
         </div>
+        </div>
+        
 
     );
 }

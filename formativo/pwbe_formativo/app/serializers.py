@@ -16,6 +16,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         return user
 
 class DisciplinaSerializer(serializers.ModelSerializer):
+    # professor = UsuarioSerializer(read_only=True)
     class Meta:
         model = Disciplina
         fields = "__all__"

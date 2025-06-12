@@ -5,22 +5,22 @@ import { Link } from 'react-router-dom';
 import add from '../assets/add.png';
 import edit from '../assets/edit.png';
 import del from'../assets/delete.png';
-export function Disciplina() {
-  const [disciplinas, setDisciplinas] = useState([]);
-  const [professores, setProfessores] = useState({});
+export function Professores() {
+//   const [disciplinas, setDisciplinas] = useState([]);
+  const [professores, setProfessores] = useState([]);
  
   useEffect(() => {
     const token = localStorage.getItem('access_token');
  
     // Buscar disciplinas
-    axios.get('http://127.0.0.1:8000/api/disciplinas/', {
+    axios.get('http://127.0.0.1:8000/api/usuario/', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     })
     //Se a resposta da API for positiva
     .then(response => {
-      setDisciplinas(response.data);
+      setProfessores(response.data);
     })
     //se retornar um erro
     .catch(error => {
@@ -53,7 +53,7 @@ export function Disciplina() {
  
         const token = localStorage.getItem('access_token');
  
-        axios.delete(`http://127.0.0.1:8000/api/disciplinas/${id}/`, {
+        axios.delete(`http://127.0.0.1:8000/api/usuario/${id}/`, {
             headers: {
             'Authorization': `Bearer ${token}`
             }
@@ -92,20 +92,20 @@ export function Disciplina() {
             </thead>
             <tbody>
               {/* Uso o map(função callback) para fazer o retorno das disciplinas */}
-              {disciplinas.map(disciplina => (
-                <tr key={disciplina.id}>
-                  <td>{disciplina.nome}</td>
-                  <td>{disciplina.curso}</td>
-                  <td>{disciplina.descricao}</td>
-                  <td>{disciplina.carga_horaria}</td>
-                  <td>{professores[disciplina.professor] || '---'}</td>
+              {professores.map(professor => (
+                <tr key={professor.id}>
+                  <td>{professor.username}</td>
+                  <td>{professor.ni}</td>
+                  <td>{professor.telefone}</td>
+                  <td>{professor.data_nascimento}</td>
+                  <td>{professores[usuario.professor] || '---'}</td>
                   <td className={estilos.acoes}>
                     {/* Passo para o "param" o id do item que posso editar e excluir */}
-                   <Link to={`/inicial/disciplina/editar/${disciplina.id}`}>
+                   <Link to={`/inicial/usuario/editar/${usuario.id}`}>
                       <img src={edit} className={estilos.icone}/>
                     </Link>
                     <img src={del} alt="Excluir" className={estilos.icone}
-                      onClick={() => handleDelete(disciplina.id)}/>                                  
+                      onClick={() => handleDelete(usuario.id)}/>                                  
                   </td>
                 </tr>
               ))}

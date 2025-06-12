@@ -65,11 +65,13 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+        'django.contrib.messages.middleware.MessageMiddleware',  # This is the key line
+    
 ]
 
+ROOT_URLCONF = 'projeto.urls'
 ROOT_URLCONF = 'projeto.urls'
 
 TEMPLATES = [
@@ -99,7 +101,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'formativo',
         'USER' : 'root',
-        'PASSWORD' : 'senai123', 
+        'PASSWORD' : 'root', 
         'HOST' : 'localhost', 
         'PORT' : '3306'
     }
@@ -150,4 +152,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5174",
+    "http://127.0.0.1:8000",
 ]
+CORS_ALLOW_ALL_ORIGINS = True

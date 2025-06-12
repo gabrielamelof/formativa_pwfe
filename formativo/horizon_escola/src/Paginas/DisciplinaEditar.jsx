@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import estilos from './Visualizar.module.css';
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
  
 const schemaDisciplina = z.object({
     nome: z.string()
@@ -25,9 +26,12 @@ const schemaDisciplina = z.object({
                             }).min(1, 'Selecione um professor')
 });
  
-export function DisciplinaCadastrar() {
+export function DisciplinaEditar() {
  
     const [professores, setProfessores] = useState([]);
+    const { id } = useParams();
+    const navigate = useNavigate();
+ 
     const {
         register,
         handleSubmit,
@@ -46,9 +50,19 @@ export function DisciplinaCadastrar() {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                // setProfessores(response.data);
+                setProfessores(response.data);
+                
                 const professoresFiltrados = response.data.filter(user => user.tipo === 'P');
                 setProfessores(professoresFiltrados);
+
+                //Preenche o formulários com os dados do registro do ID
+                 const resDisciplina = await axios.get(`http://127.0.0.1:8000/api/usuario/${id}/`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+ 
+                // Preenche o formulário
+                reset(resDisciplina.data);
+ 
             } catch (error) {
                 console.error("Erro ao carregar professores", error);
             }
@@ -61,14 +75,14 @@ export function DisciplinaCadastrar() {
         try {
             const token = localStorage.getItem('access_token');
 
-            const payload = {
-            ...data,
-            carga_horaria: data.cargaHoraria,
+             const payload = {
+                ...data,
+                carga_horaria: data.cargaHoraria,
             };
             delete payload.cargaHoraria;
-            
-            const response = await axios.post(
-                'http://127.0.0.1:8000/api/disciplinas/',
+ 
+            const response = await axios.put(
+                `http://127.0.0.1:8000/api/disciplinas/${id}/`,
                 payload,
                 {
                     headers: {
@@ -77,14 +91,15 @@ export function DisciplinaCadastrar() {
                     }
                 }
             );
-        
-            console.log('Disciplina cadastrado com sucesso!', response.data);
-            alert('Disciplina cadastrado com sucesso!');
+ 
+            console.log('Disciplina atualizada com sucesso!', response.data);
+            alert('Disciplina atualizada com sucesso!');
             reset();
+            navigate('/inicial/disciplina');
  
         } catch (error) {
-            console.error('Erro ao cadastrar disciplina', error);
-            alert("Erro ao cadastrar disciplina");
+            console.error('Erro ao atualizar disciplina', error);
+            alert("Erro ao atualizar disciplina");
         }
     }
  
@@ -92,7 +107,7 @@ export function DisciplinaCadastrar() {
         <div className={estilos.container}>
            
             <form className={estilos.crudForm} onSubmit={handleSubmit(obterDadosFormulario)}>
-                    <h2 className={estilos.titulo}>Cadastro de Disciplina</h2>
+                    <h2 className={estilos.titulo}>Edição de Disciplina</h2>
                     <label className ={estilos.nomeCampo} >Nome da Disciplina</label>
                     <input                        
                         className={estilos.inputField}
@@ -147,11 +162,11 @@ export function DisciplinaCadastrar() {
                     {errors.professor && <p className={estilos.error}>{errors.professor.message}</p>}
                
  
-                
-                <button className={estilos.submitButton} type="submit">
-                    Cadastrar
-                </button>
-                
+                <div className={estilos.icones}>
+                    <button className={estilos.submitButton} type="submit">
+                        Editar
+                    </button>
+                </div>
             </form>
         </div>
     );

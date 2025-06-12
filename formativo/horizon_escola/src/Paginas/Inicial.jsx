@@ -8,10 +8,10 @@ export function Inicial(){
     return(
         <>
             <Cabecalho/>
-            {/* <div className={estilos.banner}>
+            <div className={estilos.banner}>
                 <img src={Banner}/>
             </div>
-            <h1 className={estilos.titulo}>Funcionalidades</h1> */}
+            <h1 className={estilos.titulo}>Funcionalidades</h1>
                 
             <Outlet/>
         </>
